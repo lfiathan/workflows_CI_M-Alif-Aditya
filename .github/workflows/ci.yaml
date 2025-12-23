@@ -20,25 +20,29 @@ jobs:
       run: |
         pip install mlflow==2.19.0 scikit-learn pandas
 
-    - name: Set up Miniconda
-      uses: conda-incubator/setup-miniconda@v2
+    - name: Set up conda
+      uses: conda-incubator/setup-miniconda@v3
       with:
+        miniforge-version: latest
+        miniforge-variant: Mambaforge
         python-version: 3.12.7
         auto-update-conda: true
 
     - name: Create env via mamba
       run: |
-        mamba env create -f MLProject/conda.yaml || true
+        mamba env create -f MLProject/conda.yaml
 
     - name: Run MLflow Project
       run: |
         source $CONDA/etc/profile.d/conda.sh
         mlflow run MLProject
+
     - name: Upload MLflow artifacts
       uses: actions/upload-artifact@v4
       with:
         name: mlflow-artifacts
         path: mlruns
+
     - name: Build Docker Image
       run: |
         RUN_ID=$(ls -td mlruns/*/* | head -1 | cut -d'/' -f3)
@@ -49,7 +53,11 @@ jobs:
         echo "${{ secrets.DOCKER_PASSWORD }}" | docker login \
         -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
+    - name: Tag Docker Image
+      run: |
+        docker tag "${{ secrets.DOCKER_USERNAME }}/wine-quality-app:latest" "${{ secrets.DOCKER_USERNAME }}/wine-quality-app:v1"
+
     - name: Push Docker Image
       run: |
-        docker tag red-wine-model ${{ secrets.DOCKER_USERNAME }}/red-wine-model:latest
-        docker push ${{ secrets.DOCKER_USERNAME }}/red-wine-model:latest
+        docker push "${{ secrets.DOCKER_USERNAME }}/wine-quality-app:latest"
+        docker push "${{ secrets.DOCKER_USERNAME }}/wine-quality-app:v1"
