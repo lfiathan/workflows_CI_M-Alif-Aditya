@@ -26,6 +26,9 @@ jobs:
         python-version: 3.12.7
         auto-update-conda: true
 
+    - name: Install mamba
+      run: conda install -y mamba -c conda-forge
+
     - name: Create env via mamba
       run: |
         mamba env create -f MLProject/conda.yaml
