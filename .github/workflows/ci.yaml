@@ -21,7 +21,7 @@ jobs:
         pip install mlflow==2.19.0 scikit-learn pandas
 
     - name: Set up conda
-      uses: conda-incubator/setup-miniconda@v3
+      uses: conda-incubator/setup-miniconda@v2
       with:
         miniforge-version: latest
         miniforge-variant: Mambaforge
