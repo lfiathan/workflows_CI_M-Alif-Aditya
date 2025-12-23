@@ -32,7 +32,7 @@ jobs:
 
     - name: Run MLflow Project
       run: |
-        source /usr/share/miniconda3/etc/profile.d/conda.sh
+        source $CONDA/etc/profile.d/conda.sh
         mlflow run MLProject
     - name: Upload MLflow artifacts
       uses: actions/upload-artifact@v4
