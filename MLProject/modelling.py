@@ -6,6 +6,7 @@ from pathlib import Path
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
+
 def train(n_estimators, max_depth):
     DATA_PATH = Path(__file__).resolve().parent / "winequality_preprocessed.csv"
     df = pd.read_csv(DATA_PATH)
@@ -28,3 +29,4 @@ if __name__ == "__main__":
     parser.add_argument("--max_depth", type=int, default=10)
     args = parser.parse_args()
     train(args.n_estimators, args.max_depth)
+    

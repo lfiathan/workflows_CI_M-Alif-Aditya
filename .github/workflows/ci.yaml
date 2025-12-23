@@ -42,7 +42,7 @@ jobs:
     - name: Build Docker Image
       run: |
         RUN_ID=$(ls -td mlruns/*/* | head -1 | cut -d'/' -f3)
-        mlflow models build-docker -m "runs:/$RUN_ID/artifacts/model" -n red-wine-model
+        mlflow models build-docker -m "runs:/$RUN_ID/model" -n red-wine-model
 
     - name: Login Docker Hub
       run: |
